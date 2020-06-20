@@ -102,3 +102,9 @@ dist
 
 # TernJS port file
 .tern-port
+
+# SQLite database file
+*.db
+
+# Treehouse Instructions for this project
+README_Instructions.md
