@@ -6,11 +6,11 @@
 ### How to Use
 You will need Node.js to run the project
 
-Download or clone the repository
-change into the project directory
-$ npm install
-$ npm run seed - this will create a starter database called "fsjstd-restapi.db"
-$ npm start
+- Download or clone the repository
+- change into the project directory
+- $ npm install
+- $ npm run seed - this will create a starter database called "fsjstd-restapi.db"
+- $ npm start
 
 You can test the routes using the provided Postman collection - "RESTAPI.postman_collection.json"
 
