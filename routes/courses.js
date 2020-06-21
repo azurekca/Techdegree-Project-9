@@ -33,7 +33,8 @@ router.get('/:id', asyncHandler(async (req, res) => {
 router.post('/', authenticateUser, asyncHandler( async (req, res, next) => {
   try {
     const course = await Course.create(req.body);
-    res.json(course);
+    res.location('/api/courses/' + course.id)
+    res.status(200).end();
   } catch (error) {
     if (error.name === 'SequelizeValidationError') {
       res.status(400).json({ error: error.errors[0].message });
