@@ -3,6 +3,7 @@ const router = express.Router();
 const bcryptjs = require('bcryptjs');
 const { asyncHandler, authenticateUser } = require('../middleware');
 const { User } = require('../models');
+const { handleSequelizeValidationErrors: seqErrors } = require('../helpers');
 
 
 // Route that returns the currently authenticated user.
@@ -23,7 +24,7 @@ router.post('/', asyncHandler(async(req, res, next) => {
   } catch (error) {
     if (error.name === 'SequelizeValidationError' || error.name === 'SequelizeUniqueConstraintError') {
       // validation error
-      res.status(400).json({ error: error.errors[0].message });
+      res.status(400).json({ error: seqErrors(error) });
     } else {
       // server error
      next(error);
