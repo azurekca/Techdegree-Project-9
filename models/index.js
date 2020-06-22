@@ -19,7 +19,7 @@ if (config.use_env_variable) {
 (async () => {
   try {
     await sequelize.authenticate()
-    console.log('Connection has been established successfully.');
+    console.log('Database connection has been established successfully.');
   } catch(err) {
     console.error('Unable to connect to the database:', err);
   }
