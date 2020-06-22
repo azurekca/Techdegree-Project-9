@@ -2,12 +2,16 @@ const express = require('express');
 const router = express.Router();
 const { asyncHandler, authenticateUser } = require('../middleware');
 const { Course, User } = require('../models');
+const { handleSequelizeValidationErrors: seqErrors } = require('../helpers');
 
 //  GET /api/courses 200 - Returns a list of courses (including the user that owns each course)
 router.get('/', asyncHandler(async (req, res) => {
   const courses = await Course.findAll({
     attributes: {exclude: ['createdAt', 'updatedAt']},
-    include: User
+    include: {
+      model: User,
+      attributes: ['id', 'firstName', 'lastName', 'emailAddress']
+    }
   });
   res.json(courses);
 }));
@@ -16,7 +20,10 @@ router.get('/', asyncHandler(async (req, res) => {
 router.get('/:id', asyncHandler(async (req, res) => {
   const course = await Course.findOne({
     attributes: {exclude: ['createdAt', 'updatedAt']},
-    include: User,
+    include: {
+      model: User,
+      attributes: ['id', 'firstName', 'lastName', 'emailAddress']
+    },
     where: {
       id: req.params.id
     }
@@ -37,7 +44,7 @@ router.post('/', authenticateUser, asyncHandler( async (req, res, next) => {
     res.status(200).end();
   } catch (error) {
     if (error.name === 'SequelizeValidationError') {
-      res.status(400).json({ error: error.errors[0].message });
+      res.status(400).json({ error: seqErrors(error) });
     } else {
       next(error);
     }
@@ -66,7 +73,7 @@ router.put('/:id', authenticateUser, asyncHandler (async (req, res, next) => {
         }
       } catch (error) {
         if (error.name === 'SequelizeValidationError') {
-          res.status(400).json({ error: error.errors[0].message });
+          res.status(400).json({ error: seqErrors(error) });
         } else {
           next(error);
         }
